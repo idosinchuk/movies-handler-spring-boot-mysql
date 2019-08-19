@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
+@CacheConfig(cacheNames = { "movies" }) // tells Spring where to store cache for this class
 public class MovieServiceImpl implements MovieService {
 
 	@Autowired
@@ -36,6 +39,7 @@ public class MovieServiceImpl implements MovieService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Cacheable // caches the result of findAllMovies() method
 	public Page<MovieResponseDTO> findAllMovies(Pageable pageable) {
 
 		Page<MovieEntity> entityResponse = movieRepository.findAll(pageable);
@@ -53,6 +57,7 @@ public class MovieServiceImpl implements MovieService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Cacheable // caches the result of findMovieById() method
 	public MovieResponseDTO findMovieById(Long id) {
 
 		MovieResponseDTO response = null;
