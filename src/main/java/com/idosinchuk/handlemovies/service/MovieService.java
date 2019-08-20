@@ -2,6 +2,7 @@ package com.idosinchuk.handlemovies.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 import com.idosinchuk.handlemovies.dto.MovieRequestDTO;
 import com.idosinchuk.handlemovies.dto.MovieResponseDTO;
@@ -37,7 +38,7 @@ public interface MovieService {
 	 * @param movieRequestDTO request object
 	 * @return {@link MovieResponseDTO}
 	 */
-	public MovieResponseDTO addMovie(MovieRequestDTO movieRequestDTO);
+	public ResponseEntity<MovieResponseDTO> addMovie(MovieRequestDTO movieRequestDTO);
 
 	/**
 	 * Delete a movie by the id.

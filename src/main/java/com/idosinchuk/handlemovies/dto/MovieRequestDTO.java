@@ -6,8 +6,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.idosinchuk.handlemovies.entity.ActorEntity;
-import com.idosinchuk.handlemovies.entity.GenreEntity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -39,9 +37,9 @@ public class MovieRequestDTO {
 	private String year;
 
 	@ApiModelProperty(value = "Actors", example = "List of actors")
-	private List<ActorEntity> actors;
+	private List<ActorRequestDTO> actors;
 
 	@ApiModelProperty(value = "Genres", example = "List of genres")
-	private List<GenreEntity> genres;
+	private List<GenreRequestDTO> genres;
 
 }

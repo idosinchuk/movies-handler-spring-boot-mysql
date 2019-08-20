@@ -5,8 +5,12 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.idosinchuk.handlemovies.dto.GenreRequestDTO;
@@ -25,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
+@CacheConfig(cacheNames = { "genres" }) // tells Spring where to store cache for this class
 public class GenreServiceImpl implements GenreService {
 
 	@Autowired
@@ -37,6 +42,7 @@ public class GenreServiceImpl implements GenreService {
 	 * {@inheritDoc}
 	 */
 	@Override
+	@Cacheable // caches the result of findAllGenres() method
 	public Page<GenreResponseDTO> findAllGenres(Pageable pageable) {
 
 		Page<GenreEntity> entityResponse = genreRepository.findAll(pageable);
@@ -53,6 +59,7 @@ public class GenreServiceImpl implements GenreService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Cacheable // caches the result of findGenreById() method
 	public GenreResponseDTO findGenreById(Long id) {
 
 		GenreResponseDTO response = null;
@@ -87,7 +94,12 @@ public class GenreServiceImpl implements GenreService {
 		GenreEntity entityResponse = genreRepository.save(entityRequest);
 		log.debug("The genre was saved successfully");
 
-		return modelMapper.map(entityResponse, GenreResponseDTO.class);
+		GenreResponseDTO response = modelMapper.map(entityResponse, GenreResponseDTO.class);
+
+		// Clear cache after adding the movie.
+		evictCache();
+
+		return response;
 	}
 
 	/**
@@ -98,6 +110,14 @@ public class GenreServiceImpl implements GenreService {
 		log.debug("Call to database to delete the genrex by the id: " + id);
 		genreRepository.deleteById(id);
 		log.debug("The genre was deleted successfully");
+
+		// Clear cache after deleting the movie.
+		evictCache();
 	}
 
+	@Scheduled(fixedDelay = 3600000)
+	@CacheEvict(value = "genres", allEntries = true)
+	public void evictCache() {
+		log.debug("Evicting all entries from movies.");
+	}
 }

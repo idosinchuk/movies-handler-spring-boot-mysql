@@ -5,8 +5,12 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.idosinchuk.handlemovies.dto.ActorRequestDTO;
@@ -25,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
+@CacheConfig(cacheNames = { "actors" }) // tells Spring where to store cache for this class
 public class ActorServiceImpl implements ActorService {
 
 	@Autowired
@@ -37,6 +42,7 @@ public class ActorServiceImpl implements ActorService {
 	 * {@inheritDoc}
 	 */
 	@Override
+	@Cacheable // caches the result of findAllActors() method
 	public Page<ActorResponseDTO> findAllActors(Pageable pageable) {
 
 		Page<ActorEntity> entityResponse = actorRepository.findAll(pageable);
@@ -89,7 +95,12 @@ public class ActorServiceImpl implements ActorService {
 		ActorEntity entityResponse = actorRepository.save(entityRequest);
 		log.debug("The actor was saved successfully");
 
-		return modelMapper.map(entityResponse, ActorResponseDTO.class);
+		ActorResponseDTO response = modelMapper.map(entityResponse, ActorResponseDTO.class);
+
+		// Clear cache after adding the movie.
+		evictCache();
+
+		return response;
 	}
 
 	/**
@@ -101,6 +112,14 @@ public class ActorServiceImpl implements ActorService {
 		actorRepository.deleteById(id);
 		log.debug("The actor was deleted successfully");
 
+		// Clear cache after deleting the movie.
+		evictCache();
+	}
+
+	@Scheduled(fixedDelay = 3600000)
+	@CacheEvict(value = "actors", allEntries = true)
+	public void evictCache() {
+		log.debug("Evicting all entries from movies.");
 	}
 
 }

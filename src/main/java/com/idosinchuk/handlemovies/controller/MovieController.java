@@ -97,13 +97,8 @@ public class MovieController {
 			@ApiResponse(code = 503, message = "Service Unavailable") })
 	public ResponseEntity<MovieResponseDTO> addMovie(@Valid @RequestBody MovieRequestDTO movieRequestDTO) {
 
-		MovieResponseDTO response = movieService.addMovie(movieRequestDTO);
+		return movieService.addMovie(movieRequestDTO);
 
-		if (response == null || ObjectUtils.isEmpty(response)) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		} else {
-			return new ResponseEntity<>(response, HttpStatus.CREATED);
-		}
 	}
 
 	@DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
