@@ -2,6 +2,7 @@ package com.idosinchuk.handlemovies.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 import com.idosinchuk.handlemovies.dto.GenreRequestDTO;
 import com.idosinchuk.handlemovies.dto.GenreResponseDTO;
@@ -29,7 +30,7 @@ public interface GenreService {
 	 * @param id of the genre
 	 * @return {@link GenreResponseDTO}
 	 */
-	public GenreResponseDTO findGenreById(Long id);
+	public ResponseEntity<GenreResponseDTO> findGenreById(Long id);
 
 	/**
 	 * Add a genre.

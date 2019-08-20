@@ -1,7 +1,8 @@
 package com.idosinchuk.handlemovies.service;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.http.ResponseEntity;
 
 import com.idosinchuk.handlemovies.dto.MovieRequestDTO;
@@ -22,7 +23,9 @@ public interface MovieService {
 	 * @param pageable param for pagination
 	 * @return Page of {@link MovieResponseDTO}
 	 */
-	public Page<MovieResponseDTO> findAllMovies(Pageable pageable);
+	@SuppressWarnings("rawtypes")
+	public ResponseEntity<PagedResources<MovieResponseDTO>> findAllMovies(Pageable pageable,
+			PagedResourcesAssembler assembler);
 
 	/**
 	 * Retrieve details of a movie by the id.
@@ -30,7 +33,7 @@ public interface MovieService {
 	 * @param id of the movie
 	 * @return {@link MovieResponseDTO}
 	 */
-	public MovieResponseDTO findMovieById(Long id);
+	public ResponseEntity<MovieResponseDTO> findMovieById(Long id);
 
 	/**
 	 * Add a movie.

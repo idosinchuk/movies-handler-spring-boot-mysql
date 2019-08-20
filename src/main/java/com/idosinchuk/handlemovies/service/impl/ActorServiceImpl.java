@@ -10,6 +10,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +61,7 @@ public class ActorServiceImpl implements ActorService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public ActorResponseDTO findActorById(Long id) {
+	public ResponseEntity<ActorResponseDTO> findActorById(Long id) {
 
 		ActorResponseDTO response = null;
 
@@ -67,18 +69,19 @@ public class ActorServiceImpl implements ActorService {
 
 		// Find actor information by id
 		Optional<ActorEntity> entityResponse = actorRepository.findById(id);
-		// log.debug("The result of finding info about the actor by the id was: " +
-		// entityResponse);
 
 		if (entityResponse.isPresent()) {
 			ActorEntity existingActor = entityResponse.get();
 
 			// Convert Entity response to DTO
-			return response = modelMapper.map(existingActor, new TypeToken<ActorResponseDTO>() {
+			response = modelMapper.map(existingActor, new TypeToken<ActorResponseDTO>() {
 			}.getType());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+
 		} else {
 			log.debug("There is no actor in the repo with the id: " + id);
-			return response;
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 
 	}

@@ -3,15 +3,11 @@ package com.idosinchuk.handlemovies.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.idosinchuk.handlemovies.dto.MovieRequestDTO;
 import com.idosinchuk.handlemovies.dto.MovieResponseDTO;
-import com.idosinchuk.handlemovies.entity.MovieEntity;
 import com.idosinchuk.handlemovies.service.MovieService;
 
 import io.swagger.annotations.Api;
@@ -51,7 +46,7 @@ public class MovieController {
 	 * @param pageable paging fields
 	 * @return List of actors found with support hateoas and pagination
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes" })
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Retrieve list of all movies.")
@@ -59,17 +54,18 @@ public class MovieController {
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public HttpEntity<PagedResources<MovieEntity>> findAllMovies(Pageable pageable, PagedResourcesAssembler assembler) {
+	public ResponseEntity<PagedResources<MovieResponseDTO>> findAllMovies(Pageable pageable,
+			PagedResourcesAssembler assembler) {
 
-		Page<MovieResponseDTO> response = movieService.findAllMovies(pageable);
-
-		if (response == null || ObjectUtils.isEmpty(response)) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(assembler.toResource(response), HttpStatus.OK);
-		}
+		return movieService.findAllMovies(pageable, assembler);
 	}
 
+	/**
+	 * Retrieve details of a movie by the id.
+	 * 
+	 * @param id movie id
+	 * @return Information of the actor
+	 */
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Retrieve details of a movie by the id.")
@@ -79,15 +75,16 @@ public class MovieController {
 			@ApiResponse(code = 503, message = "Service Unavailable") })
 	public ResponseEntity<MovieResponseDTO> findMovieById(@PathVariable Long id) {
 
-		MovieResponseDTO response = movieService.findMovieById(id);
+		return movieService.findMovieById(id);
 
-		if (response == null || ObjectUtils.isEmpty(response)) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		}
 	}
 
+	/**
+	 * Add a movie.
+	 * 
+	 * @param MovieResponseDTO object to save
+	 * @return response with status and MovieResponseDTO
+	 */
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Add a movie.")
@@ -101,6 +98,12 @@ public class MovieController {
 
 	}
 
+	/**
+	 * Delete a movie by the id.
+	 * 
+	 * @param id movie id
+	 * @return response with status
+	 */
 	@DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Delete a movie by the id.")

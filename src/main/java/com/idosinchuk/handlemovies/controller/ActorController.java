@@ -70,6 +70,12 @@ public class ActorController {
 		}
 	}
 
+	/**
+	 * Retrieve details of a actor by the id.
+	 * 
+	 * @param id actor id
+	 * @return Information of the actor
+	 */
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Retrieve details of an actor by the id.")
@@ -79,15 +85,15 @@ public class ActorController {
 			@ApiResponse(code = 503, message = "Service Unavailable") })
 	public ResponseEntity<ActorResponseDTO> findActorById(@PathVariable Long id) {
 
-		ActorResponseDTO response = actorService.findActorById(id);
-
-		if (response == null || ObjectUtils.isEmpty(response)) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		}
+		return actorService.findActorById(id);
 	}
 
+	/**
+	 * Add a actor.
+	 * 
+	 * @param ActorResponseDTO object to save
+	 * @return response with status and ActorResponseDTO
+	 */
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Add an actor.")
@@ -106,6 +112,12 @@ public class ActorController {
 		}
 	}
 
+	/**
+	 * Delete a actor by the id.
+	 * 
+	 * @param id actor id
+	 * @return response with status
+	 */
 	@DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Delete an actor by the id.")

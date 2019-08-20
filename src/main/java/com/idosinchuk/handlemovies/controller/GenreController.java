@@ -70,6 +70,12 @@ public class GenreController {
 		}
 	}
 
+	/**
+	 * Retrieve details of a genre by the id.
+	 * 
+	 * @param id genre id
+	 * @return Information of the genre
+	 */
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Retrieve details of a genre by the id.")
@@ -79,15 +85,16 @@ public class GenreController {
 			@ApiResponse(code = 503, message = "Service Unavailable") })
 	public ResponseEntity<GenreResponseDTO> findGenreById(@PathVariable Long id) {
 
-		GenreResponseDTO response = genreService.findGenreById(id);
+		return genreService.findGenreById(id);
 
-		if (response == null || ObjectUtils.isEmpty(response)) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		}
 	}
 
+	/**
+	 * Add a genre.
+	 * 
+	 * @param GenreResponseDTO object to save
+	 * @return response with status and GenreResponseDTO
+	 */
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Add a genre.")
@@ -106,6 +113,12 @@ public class GenreController {
 		}
 	}
 
+	/**
+	 * Delete a genre by the id.
+	 * 
+	 * @param id genre id
+	 * @return response with status
+	 */
 	@DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Delete a genre by the id.")

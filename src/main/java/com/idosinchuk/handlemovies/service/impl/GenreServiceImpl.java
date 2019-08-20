@@ -10,6 +10,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +62,7 @@ public class GenreServiceImpl implements GenreService {
 	 * {@inheritDoc}
 	 */
 	@Cacheable // caches the result of findGenreById() method
-	public GenreResponseDTO findGenreById(Long id) {
+	public ResponseEntity<GenreResponseDTO> findGenreById(Long id) {
 
 		GenreResponseDTO response = null;
 
@@ -74,11 +76,14 @@ public class GenreServiceImpl implements GenreService {
 			GenreEntity existingGenre = entityResponse.get();
 
 			// Convert Entity response to DTO
-			return response = modelMapper.map(existingGenre, new TypeToken<GenreResponseDTO>() {
+			response = modelMapper.map(existingGenre, new TypeToken<GenreResponseDTO>() {
 			}.getType());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+
 		} else {
 			log.debug("There is no genre in the repo with the id: " + id);
-			return response;
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
 

@@ -13,6 +13,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -58,18 +60,21 @@ public class MovieServiceImpl implements MovieService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Cacheable // caches the result of findAllMovies() method
-	public Page<MovieResponseDTO> findAllMovies(Pageable pageable) {
+	public ResponseEntity<PagedResources<MovieResponseDTO>> findAllMovies(Pageable pageable,
+			PagedResourcesAssembler assembler) {
 
 		Page<MovieEntity> entityResponse = movieRepository.findAll(pageable);
-		// log.debug("The result of finding all the movies from database was: " +
-		// movies);
 
+		if (entityResponse.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 		// Convert Entity response to DTO
 		Page<MovieResponseDTO> response = modelMapper.map(entityResponse, new TypeToken<Page<MovieResponseDTO>>() {
 		}.getType());
 
-		return response;
+		return new ResponseEntity<>(assembler.toResource(response), HttpStatus.OK);
 
 	}
 
@@ -77,7 +82,7 @@ public class MovieServiceImpl implements MovieService {
 	 * {@inheritDoc}
 	 */
 	@Cacheable // caches the result of findMovieById() method
-	public MovieResponseDTO findMovieById(Long id) {
+	public ResponseEntity<MovieResponseDTO> findMovieById(Long id) {
 
 		MovieResponseDTO response = null;
 
@@ -85,18 +90,19 @@ public class MovieServiceImpl implements MovieService {
 
 		// Find movie information by id
 		Optional<MovieEntity> entityResponse = movieRepository.findById(id);
-		// log.debug("The result of finding info about the movie by the id was: " +
-		// movie);
 
 		if (entityResponse.isPresent()) {
 			MovieEntity existingMovie = entityResponse.get();
 
 			// Convert Entity response to DTO
-			return response = modelMapper.map(existingMovie, new TypeToken<MovieResponseDTO>() {
+			response = modelMapper.map(existingMovie, new TypeToken<MovieResponseDTO>() {
 			}.getType());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+
 		} else {
 			log.debug("There is no actor in the repo with the id: " + id);
-			return response;
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
 
@@ -109,8 +115,8 @@ public class MovieServiceImpl implements MovieService {
 		List<ActorRequestDTO> actors = movieRequestDTO.getActors();
 		List<GenreRequestDTO> genres = movieRequestDTO.getGenres();
 
-		// Check if movie request contains duplicated actors and genres
-		checkAndDeleteDuplicates(movieRequestDTO, actors, genres);
+		// Check if movie request contains duplicates actors and genres
+		deleteDuplicatesActorsAndGenres(movieRequestDTO, actors, genres);
 
 		MovieEntity movieEntity = modelMapper.map(movieRequestDTO, MovieEntity.class);
 
@@ -119,7 +125,7 @@ public class MovieServiceImpl implements MovieService {
 		List<ActorEntity> actorRequestList = movieEntity.getActors();
 
 		// Check if actor exists in database, if not exists delete it from request
-		checkAndDeleteNonPresentActor(actorEntityListFromDB, actorRequestList);
+		deleteNonPresentActors(actorEntityListFromDB, actorRequestList);
 
 		// If there is no actor present, we return Bad Request
 		if (actorRequestList.isEmpty()) {
@@ -131,7 +137,7 @@ public class MovieServiceImpl implements MovieService {
 		List<GenreEntity> genreRequestList = movieEntity.getGenres();
 
 		// Check if genre exists in database, if not exists delete it from request
-		checkAndDeleteNonPresentGenre(genreEntityListFromDB, genreRequestList);
+		deleteNonPresentGenres(genreEntityListFromDB, genreRequestList);
 
 		// If there is no genre present, we return Bad Request
 		if (genreRequestList.isEmpty()) {
@@ -171,7 +177,7 @@ public class MovieServiceImpl implements MovieService {
 		log.debug("Evicting all entries from movies.");
 	}
 
-	private static MovieRequestDTO checkAndDeleteDuplicates(MovieRequestDTO movieRequestDTO,
+	private static MovieRequestDTO deleteDuplicatesActorsAndGenres(MovieRequestDTO movieRequestDTO,
 			List<ActorRequestDTO> actors, List<GenreRequestDTO> genres) {
 
 		HashSet<Object> seen = new HashSet<>();
@@ -188,7 +194,7 @@ public class MovieServiceImpl implements MovieService {
 		return movieRequestDTO;
 	}
 
-	private static List<ActorEntity> checkAndDeleteNonPresentActor(List<ActorEntity> actorEntityListFromDB,
+	private static List<ActorEntity> deleteNonPresentActors(List<ActorEntity> actorEntityListFromDB,
 			List<ActorEntity> actorRequestList) {
 
 		List<ActorEntity> toRemove = new ArrayList<>();
@@ -220,7 +226,7 @@ public class MovieServiceImpl implements MovieService {
 
 	}
 
-	private static List<GenreEntity> checkAndDeleteNonPresentGenre(List<GenreEntity> genreEntityListFromDB,
+	private static List<GenreEntity> deleteNonPresentGenres(List<GenreEntity> genreEntityListFromDB,
 			List<GenreEntity> genreRequestList) {
 
 		List<GenreEntity> toRemove = new ArrayList<>();

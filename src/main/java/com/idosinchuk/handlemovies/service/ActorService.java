@@ -2,6 +2,7 @@ package com.idosinchuk.handlemovies.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 import com.idosinchuk.handlemovies.dto.ActorRequestDTO;
 import com.idosinchuk.handlemovies.dto.ActorResponseDTO;
@@ -29,7 +30,7 @@ public interface ActorService {
 	 * @param id of the actors
 	 * @return {@link ActorResponseDTO}
 	 */
-	public ActorResponseDTO findActorById(Long id);
+	public ResponseEntity<ActorResponseDTO> findActorById(Long id);
 
 	/**
 	 * Add an actor.
