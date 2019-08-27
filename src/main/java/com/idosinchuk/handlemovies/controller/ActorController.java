@@ -3,15 +3,11 @@ package com.idosinchuk.handlemovies.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +46,7 @@ public class ActorController {
 	 * @param pageable paging fields
 	 * @return List of actors found with support hateoas and pagination
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes" })
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Retrieve list of all actors.")
@@ -58,16 +54,11 @@ public class ActorController {
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public HttpEntity<PagedResources<ActorResponseDTO>> findAllActors(Pageable pageable,
+	public ResponseEntity<PagedResources<ActorResponseDTO>> findAllActors(Pageable pageable,
 			PagedResourcesAssembler assembler) {
 
-		Page<ActorResponseDTO> response = actorService.findAllActors(pageable);
+		return actorService.findAllActors(pageable, assembler);
 
-		if (response == null || ObjectUtils.isEmpty(response)) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(assembler.toResource(response), HttpStatus.OK);
-		}
 	}
 
 	/**
@@ -103,13 +94,8 @@ public class ActorController {
 			@ApiResponse(code = 503, message = "Service Unavailable") })
 	public ResponseEntity<ActorResponseDTO> addActor(@Valid @RequestBody ActorRequestDTO actorRequestDTO) {
 
-		ActorResponseDTO response = actorService.addActor(actorRequestDTO);
+		return actorService.addActor(actorRequestDTO);
 
-		if (response == null || ObjectUtils.isEmpty(response)) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		} else {
-			return new ResponseEntity<>(response, HttpStatus.CREATED);
-		}
 	}
 
 	/**

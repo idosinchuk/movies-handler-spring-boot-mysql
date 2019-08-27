@@ -10,6 +10,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -43,19 +45,20 @@ public class ActorServiceImpl implements ActorService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@Cacheable // caches the result of findAllActors() method
-	public Page<ActorResponseDTO> findAllActors(Pageable pageable) {
+	public ResponseEntity<PagedResources<ActorResponseDTO>> findAllActors(Pageable pageable,
+			PagedResourcesAssembler assembler) {
 
 		Page<ActorEntity> entityResponse = actorRepository.findAll(pageable);
-		// log.debug("The result of finding all the actors from database was: " +
-		// actors);
 
 		// Convert Entity response to DTO
 		Page<ActorResponseDTO> response = modelMapper.map(entityResponse, new TypeToken<Page<ActorResponseDTO>>() {
 		}.getType());
 
-		return response;
+		return new ResponseEntity<>(assembler.toResource(response), HttpStatus.OK);
+
 	}
 
 	/**
@@ -89,7 +92,7 @@ public class ActorServiceImpl implements ActorService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public ActorResponseDTO addActor(ActorRequestDTO actorRequestDTO) {
+	public ResponseEntity<ActorResponseDTO> addActor(ActorRequestDTO actorRequestDTO) {
 
 		ActorEntity entityRequest = modelMapper.map(actorRequestDTO, ActorEntity.class);
 
@@ -103,7 +106,7 @@ public class ActorServiceImpl implements ActorService {
 		// Clear cache after adding the movie.
 		evictCache();
 
-		return response;
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
 	/**

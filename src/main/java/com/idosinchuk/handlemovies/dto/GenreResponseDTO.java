@@ -1,8 +1,5 @@
 package com.idosinchuk.handlemovies.dto;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import io.swagger.annotations.ApiModel;
@@ -26,8 +23,6 @@ public class GenreResponseDTO {
 	private Long id;
 
 	@ApiModelProperty(value = "Genre name", example = "Action")
-	@NotNull(message = "{genre.name.notNull}")
-	@Size(min = 1, max = 60, message = "{genre.name.size}")
 	private String name;
 
 }

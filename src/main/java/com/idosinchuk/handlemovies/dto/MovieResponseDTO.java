@@ -2,9 +2,6 @@ package com.idosinchuk.handlemovies.dto;
 
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import io.swagger.annotations.ApiModel;
@@ -27,13 +24,9 @@ public class MovieResponseDTO {
 	private Long id;
 
 	@ApiModelProperty(value = "Title name", example = "SmartUp the Film")
-	@NotNull(message = "{movie.name.notNull}")
-	@Size(min = 1, max = 150, message = "{movie.name.size}")
 	private String title;
 
 	@ApiModelProperty(value = "Year", example = "2019")
-	@NotNull(message = "{year.name.notNull}")
-	@Size(min = 4, max = 4, message = "{year.name.size}")
 	private String year;
 
 	@ApiModelProperty(value = "Actors", example = "List of actors")

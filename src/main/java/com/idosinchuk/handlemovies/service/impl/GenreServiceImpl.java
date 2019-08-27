@@ -10,6 +10,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -43,19 +45,20 @@ public class GenreServiceImpl implements GenreService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@Cacheable // caches the result of findAllGenres() method
-	public Page<GenreResponseDTO> findAllGenres(Pageable pageable) {
+	public ResponseEntity<PagedResources<GenreResponseDTO>> findAllGenres(Pageable pageable,
+			PagedResourcesAssembler assembler) {
 
 		Page<GenreEntity> entityResponse = genreRepository.findAll(pageable);
-		// log.debug("The result of finding all the genres from database was: " +
-		// entityResponse);
 
 		// Convert Entity response to DTO
 		Page<GenreResponseDTO> response = modelMapper.map(entityResponse, new TypeToken<Page<GenreResponseDTO>>() {
 		}.getType());
 
-		return response;
+		return new ResponseEntity<>(assembler.toResource(response), HttpStatus.OK);
+
 	}
 
 	/**
@@ -90,7 +93,7 @@ public class GenreServiceImpl implements GenreService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public GenreResponseDTO addGenre(GenreRequestDTO genreRequestDTO) {
+	public ResponseEntity<GenreResponseDTO> addGenre(GenreRequestDTO genreRequestDTO) {
 
 		GenreEntity entityRequest = modelMapper.map(genreRequestDTO, GenreEntity.class);
 
@@ -104,7 +107,7 @@ public class GenreServiceImpl implements GenreService {
 		// Clear cache after adding the movie.
 		evictCache();
 
-		return response;
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
 	/**

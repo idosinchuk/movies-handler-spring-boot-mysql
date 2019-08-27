@@ -20,7 +20,8 @@ public interface MovieService {
 	/**
 	 * Retrieve list of all movies.
 	 * 
-	 * @param pageable param for pagination
+	 * @param pageable  object for pagination
+	 * @param assembler object for pagination
 	 * @return Page of {@link MovieResponseDTO}
 	 */
 	@SuppressWarnings("rawtypes")
@@ -47,7 +48,7 @@ public interface MovieService {
 	 * Delete a movie by the id.
 	 * 
 	 * @param id of the movie
-	 * @return response
+	 * @return {@link MovieResponseDTO}
 	 */
-	public void deleteMovie(Long id);
+	public ResponseEntity<MovieResponseDTO> deleteMovie(Long id);
 }

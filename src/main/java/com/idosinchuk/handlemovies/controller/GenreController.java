@@ -3,15 +3,11 @@ package com.idosinchuk.handlemovies.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,16 +54,11 @@ public class GenreController {
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public HttpEntity<PagedResources<GenreResponseDTO>> findAllGenres(Pageable pageable,
+	public ResponseEntity<PagedResources<GenreResponseDTO>> findAllGenres(Pageable pageable,
 			PagedResourcesAssembler assembler) {
 
-		Page<GenreResponseDTO> response = genreService.findAllGenres(pageable);
+		return genreService.findAllGenres(pageable, assembler);
 
-		if (response == null || ObjectUtils.isEmpty(response)) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(assembler.toResource(response), HttpStatus.OK);
-		}
 	}
 
 	/**
@@ -104,13 +95,8 @@ public class GenreController {
 			@ApiResponse(code = 503, message = "Service Unavailable") })
 	public ResponseEntity<GenreResponseDTO> addGenre(@Valid @RequestBody GenreRequestDTO genreRequestDTO) {
 
-		GenreResponseDTO response = genreService.addGenre(genreRequestDTO);
+		return genreService.addGenre(genreRequestDTO);
 
-		if (response == null || ObjectUtils.isEmpty(response)) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		} else {
-			return new ResponseEntity<>(response, HttpStatus.CREATED);
-		}
 	}
 
 	/**
