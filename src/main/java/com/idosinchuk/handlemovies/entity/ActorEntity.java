@@ -7,10 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  * Entity for Actor
@@ -18,9 +16,7 @@ import lombok.ToString;
  * @author Igor Dosinchuk
  *
  */
-@AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Data
 @Entity
 @Table(name = "actor")

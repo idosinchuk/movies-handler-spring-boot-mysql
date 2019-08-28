@@ -1,5 +1,6 @@
 package com.idosinchuk.handlemovies.service.impl;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -52,6 +53,10 @@ public class ActorServiceImpl implements ActorService {
 			PagedResourcesAssembler assembler) {
 
 		Page<ActorEntity> entityResponse = actorRepository.findAll(pageable);
+
+		if (Objects.isNull(entityResponse)) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 
 		// Convert Entity response to DTO
 		Page<ActorResponseDTO> response = modelMapper.map(entityResponse, new TypeToken<Page<ActorResponseDTO>>() {
@@ -112,14 +117,20 @@ public class ActorServiceImpl implements ActorService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void deleteActor(Long id) {
+	public ResponseEntity<ActorResponseDTO> deleteActor(Long id) {
+
+		ActorResponseDTO response = new ActorResponseDTO();
 
 		log.debug("Call to database to delete the actor by the id: " + id);
 		actorRepository.deleteById(id);
+
 		log.debug("The actor was deleted successfully");
 
 		// Clear cache after deleting the movie.
 		evictCache();
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+
 	}
 
 	@Scheduled(fixedDelay = 3600000)

@@ -1,5 +1,6 @@
 package com.idosinchuk.handlemovies.service.impl;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -52,6 +53,10 @@ public class GenreServiceImpl implements GenreService {
 			PagedResourcesAssembler assembler) {
 
 		Page<GenreEntity> entityResponse = genreRepository.findAll(pageable);
+
+		if (Objects.isNull(entityResponse)) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 
 		// Convert Entity response to DTO
 		Page<GenreResponseDTO> response = modelMapper.map(entityResponse, new TypeToken<Page<GenreResponseDTO>>() {
@@ -112,8 +117,12 @@ public class GenreServiceImpl implements GenreService {
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @return
 	 */
-	public void deleteGenre(Long id) {
+	public ResponseEntity<GenreResponseDTO> deleteGenre(Long id) {
+
+		GenreResponseDTO response = new GenreResponseDTO();
 
 		log.debug("Call to database to delete the genrex by the id: " + id);
 		genreRepository.deleteById(id);
@@ -121,6 +130,9 @@ public class GenreServiceImpl implements GenreService {
 
 		// Clear cache after deleting the movie.
 		evictCache();
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+
 	}
 
 	@Scheduled(fixedDelay = 3600000)

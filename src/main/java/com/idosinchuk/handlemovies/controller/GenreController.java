@@ -46,7 +46,7 @@ public class GenreController {
 	 * @param pageable paging fields
 	 * @return List of actors found with support hateoas and pagination
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes" })
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Retrieve list of all genres.")
@@ -112,8 +112,8 @@ public class GenreController {
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public void deleteGenre(@PathVariable Long id) {
+	public ResponseEntity<GenreResponseDTO> deleteGenre(@PathVariable Long id) {
 
-		genreService.deleteGenre(id);
+		return genreService.deleteGenre(id);
 	}
 }

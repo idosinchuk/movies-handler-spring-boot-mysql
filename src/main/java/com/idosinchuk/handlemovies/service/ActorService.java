@@ -48,8 +48,8 @@ public interface ActorService {
 	 * Delete a actor by the id.
 	 * 
 	 * @param id of the actor
-	 * @return response
+	 * @return {@link ActorResponseDTO}
 	 */
-	public void deleteActor(Long id);
+	public ResponseEntity<ActorResponseDTO> deleteActor(Long id);
 
 }

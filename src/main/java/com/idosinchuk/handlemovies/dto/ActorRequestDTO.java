@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.ToString;
 
 /**
  * Request DTO for Actor
@@ -16,7 +15,6 @@ import lombok.ToString;
  * @author Igor Dosinchuk
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ToString
 @Data
 @ApiModel(reference = "ActorRequest", description = "Model request for manage the actors.")
 public class ActorRequestDTO {

@@ -67,12 +67,8 @@ public class MovieServiceImplTest {
 	@Autowired
 	ModelMapper modelMapper;
 
-//	@Value("${app.invoice-repository.get}")
-//	private String invoiceDetailUrl;
-
-	ActorEntity actorEntity;
-	GenreEntity genreEntity;
-
+	private ActorEntity actorEntity;
+	private GenreEntity genreEntity;
 	private MovieEntity movieEntityResponse;
 	private MovieRequestDTO movieRequestDTO;
 	private MovieResponseDTO movieResponseDTO;

@@ -111,8 +111,9 @@ public class ActorController {
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public void deleteActor(@PathVariable Long id) {
+	public ResponseEntity<ActorResponseDTO> deleteActor(@PathVariable Long id) {
 
-		actorService.deleteActor(id);
+		return actorService.deleteActor(id);
+
 	}
 }

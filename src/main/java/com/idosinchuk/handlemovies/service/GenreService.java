@@ -48,8 +48,8 @@ public interface GenreService {
 	 * Delete a genre by the id.
 	 * 
 	 * @param id of the genre
-	 * @return response
+	 * @return {@link GenreResponseDTO}
 	 */
-	public void deleteGenre(Long id);
+	public ResponseEntity<GenreResponseDTO> deleteGenre(Long id);
 
 }

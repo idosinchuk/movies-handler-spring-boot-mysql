@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.ToString;
 
 /**
  * Response DTO for Genre
@@ -14,7 +13,6 @@ import lombok.ToString;
  */
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ToString
 @Data
 @ApiModel(reference = "GenreResponse", description = "Model response for manage the genres.")
 public class GenreResponseDTO {

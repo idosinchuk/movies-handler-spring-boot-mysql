@@ -16,10 +16,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  * Entity for Movie
@@ -28,9 +26,7 @@ import lombok.ToString;
  *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Data
 @Entity
 @Table(name = "movie")
