@@ -2,6 +2,8 @@ package com.idosinchuk.handlemovies.controller;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -37,6 +39,8 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping({ "api/v1/movies" })
 public class MovieController {
 
+	public static final Logger logger = LoggerFactory.getLogger(MovieController.class);
+
 	@Autowired
 	public MovieService movieService;
 
@@ -44,12 +48,12 @@ public class MovieController {
 	 * Retrieve list of all movies according to the search criteria.
 	 * 
 	 * @param pageable paging fields
-	 * @return List of actors found with support hateoas and pagination
+	 * @return ResponseEntity of paged list of all movies
 	 */
 	@SuppressWarnings({ "rawtypes" })
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	@ApiOperation(value = "Retrieve list of all movies.")
+	@ApiOperation(value = "Retrieve list of all movies according to the search criteria.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
@@ -83,7 +87,7 @@ public class MovieController {
 	 * Add a movie.
 	 * 
 	 * @param MovieResponseDTO object to save
-	 * @return response with status and MovieResponseDTO
+	 * @return ResponseEntity of {@link MovieResponseDTO}
 	 */
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -102,7 +106,7 @@ public class MovieController {
 	 * Delete a movie by the id.
 	 * 
 	 * @param id movie id
-	 * @return response with status
+	 * @return ResponseEntity of {@link MovieResponseDTO}
 	 */
 	@DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody

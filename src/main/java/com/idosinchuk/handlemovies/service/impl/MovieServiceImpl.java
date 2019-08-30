@@ -3,7 +3,6 @@ package com.idosinchuk.handlemovies.service.impl;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -66,11 +65,9 @@ public class MovieServiceImpl implements MovieService {
 	public ResponseEntity<PagedResources<MovieResponseDTO>> findAllMovies(Pageable pageable,
 			PagedResourcesAssembler assembler) {
 
-		Page<MovieEntity> entityResponse = movieRepository.findAll(pageable);
+		log.info("Fetching all movies");
 
-		if (Objects.isNull(entityResponse)) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+		Page<MovieEntity> entityResponse = movieRepository.findAll(pageable);
 
 		// Convert Entity response to DTO
 		Page<MovieResponseDTO> response = modelMapper.map(entityResponse, new TypeToken<Page<MovieResponseDTO>>() {
@@ -103,7 +100,7 @@ public class MovieServiceImpl implements MovieService {
 			return new ResponseEntity<>(movieResponseDTO, HttpStatus.OK);
 
 		} else {
-			log.debug("There is no actor in the repo with the id: " + id);
+			log.error("There is no actor in the repo with the id {}" + id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
@@ -119,7 +116,7 @@ public class MovieServiceImpl implements MovieService {
 
 		MovieEntity movieEntityRequest = modelMapper.map(movieRequestDTO, MovieEntity.class);
 
-		log.debug("Call to find actors into database");
+		log.info("Call to find actors into database");
 		List<ActorEntity> actorEntityListFromDB = actorRepository.findAll();
 
 		// Check if the requested actor exists in the database, if not exists delete it
@@ -133,7 +130,7 @@ public class MovieServiceImpl implements MovieService {
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 
-		log.debug("Call to find genres into database");
+		log.info("Call to find genres into database");
 		List<GenreEntity> genreEntityListFromDB = genreRepository.findAll();
 
 		// Check if the requested genre exists in the database, if not exists delete it
@@ -148,10 +145,8 @@ public class MovieServiceImpl implements MovieService {
 		}
 
 		// Save the new movie
-		log.debug("Call to save into database the new movie with the request: " + movieEntityRequest);
+		log.info("Call to save into database the new movie with the request: " + movieEntityRequest);
 		MovieEntity movieEntityResponse = movieRepository.save(movieEntityRequest);
-
-		log.debug("The movie was saved successfully");
 
 		response = modelMapper.map(movieEntityResponse, MovieResponseDTO.class);
 

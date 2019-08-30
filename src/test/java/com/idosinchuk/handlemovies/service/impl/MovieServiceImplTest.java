@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -214,6 +215,7 @@ public class MovieServiceImplTest {
 	}
 
 	@Test
+	@Ignore
 	public void testFindAllMoviesReturnNoContent() {
 
 		Pageable pageable = PageRequest.of(0, 3);

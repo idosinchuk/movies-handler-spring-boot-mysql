@@ -1,6 +1,5 @@
 package com.idosinchuk.handlemovies.service.impl;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -52,11 +51,9 @@ public class ActorServiceImpl implements ActorService {
 	public ResponseEntity<PagedResources<ActorResponseDTO>> findAllActors(Pageable pageable,
 			PagedResourcesAssembler assembler) {
 
-		Page<ActorEntity> entityResponse = actorRepository.findAll(pageable);
+		log.info("Fetching all actors");
 
-		if (Objects.isNull(entityResponse)) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+		Page<ActorEntity> entityResponse = actorRepository.findAll(pageable);
 
 		// Convert Entity response to DTO
 		Page<ActorResponseDTO> response = modelMapper.map(entityResponse, new TypeToken<Page<ActorResponseDTO>>() {
@@ -73,7 +70,7 @@ public class ActorServiceImpl implements ActorService {
 
 		ActorResponseDTO response = null;
 
-		log.debug("Call to find info about the actor into database by the id: " + id);
+		log.info("Call to find info about the actor into database by the ID {}" + id);
 
 		// Find actor information by id
 		Optional<ActorEntity> entityResponse = actorRepository.findById(id);
@@ -88,7 +85,7 @@ public class ActorServiceImpl implements ActorService {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 
 		} else {
-			log.debug("There is no actor in the repo with the id: " + id);
+			log.error("There is no actor in the repo with the ID {} " + id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 
@@ -102,10 +99,10 @@ public class ActorServiceImpl implements ActorService {
 		ActorEntity entityRequest = modelMapper.map(actorRequestDTO, ActorEntity.class);
 
 		// Save the new actor
-		log.debug("Call to save into database the new actor with the request: " + entityRequest);
+		log.info("Call to save into database the new actor with the request {} " + entityRequest);
 		ActorEntity entityResponse = actorRepository.save(entityRequest);
-		log.debug("The actor was saved successfully");
 
+		// Convert entity response to DTO
 		ActorResponseDTO response = modelMapper.map(entityResponse, ActorResponseDTO.class);
 
 		// Clear cache after adding the movie.
@@ -121,10 +118,8 @@ public class ActorServiceImpl implements ActorService {
 
 		ActorResponseDTO response = new ActorResponseDTO();
 
-		log.debug("Call to database to delete the actor by the id: " + id);
+		log.info("Call to database to delete the actor by the ID {}" + id);
 		actorRepository.deleteById(id);
-
-		log.debug("The actor was deleted successfully");
 
 		// Clear cache after deleting the movie.
 		evictCache();
@@ -136,7 +131,7 @@ public class ActorServiceImpl implements ActorService {
 	@Scheduled(fixedDelay = 3600000)
 	@CacheEvict(value = "actors", allEntries = true)
 	public void evictCache() {
-		log.debug("Evicting all entries from movies.");
+		log.debug("Evicting all entries from actors.");
 	}
 
 }

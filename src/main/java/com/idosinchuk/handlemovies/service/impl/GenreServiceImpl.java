@@ -1,6 +1,5 @@
 package com.idosinchuk.handlemovies.service.impl;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -52,11 +51,9 @@ public class GenreServiceImpl implements GenreService {
 	public ResponseEntity<PagedResources<GenreResponseDTO>> findAllGenres(Pageable pageable,
 			PagedResourcesAssembler assembler) {
 
-		Page<GenreEntity> entityResponse = genreRepository.findAll(pageable);
+		log.info("Fetching all genres");
 
-		if (Objects.isNull(entityResponse)) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+		Page<GenreEntity> entityResponse = genreRepository.findAll(pageable);
 
 		// Convert Entity response to DTO
 		Page<GenreResponseDTO> response = modelMapper.map(entityResponse, new TypeToken<Page<GenreResponseDTO>>() {
@@ -74,11 +71,10 @@ public class GenreServiceImpl implements GenreService {
 
 		GenreResponseDTO response = null;
 
-		log.debug("Call to find info about the genre into database by the id: " + id);
+		log.info("Call to find info about the genre into database by the ID {}" + id);
 
 		// Find movie information by id
 		Optional<GenreEntity> entityResponse = genreRepository.findById(id);
-		log.debug("The result of finding info about the genre by the id was: " + entityResponse);
 
 		if (entityResponse.isPresent()) {
 			GenreEntity existingGenre = entityResponse.get();
@@ -90,7 +86,7 @@ public class GenreServiceImpl implements GenreService {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 
 		} else {
-			log.debug("There is no genre in the repo with the id: " + id);
+			log.error("There is no genre in the repo with the ID {}" + id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
@@ -103,9 +99,8 @@ public class GenreServiceImpl implements GenreService {
 		GenreEntity entityRequest = modelMapper.map(genreRequestDTO, GenreEntity.class);
 
 		// Save the new genre
-		log.debug("Call to save into database the new genre with the request: " + entityRequest);
+		log.debug("Call to save into database the new genre with the request {}" + entityRequest);
 		GenreEntity entityResponse = genreRepository.save(entityRequest);
-		log.debug("The genre was saved successfully");
 
 		GenreResponseDTO response = modelMapper.map(entityResponse, GenreResponseDTO.class);
 
@@ -124,9 +119,8 @@ public class GenreServiceImpl implements GenreService {
 
 		GenreResponseDTO response = new GenreResponseDTO();
 
-		log.debug("Call to database to delete the genrex by the id: " + id);
+		log.info("Call to database to delete the genre by the ID {}" + id);
 		genreRepository.deleteById(id);
-		log.debug("The genre was deleted successfully");
 
 		// Clear cache after deleting the movie.
 		evictCache();
@@ -138,6 +132,6 @@ public class GenreServiceImpl implements GenreService {
 	@Scheduled(fixedDelay = 3600000)
 	@CacheEvict(value = "genres", allEntries = true)
 	public void evictCache() {
-		log.debug("Evicting all entries from movies.");
+		log.info("Evicting all entries from genres.");
 	}
 }

@@ -22,7 +22,7 @@ public interface ActorService {
 	 *
 	 * @param pageable  object for pagination
 	 * @param assembler object for pagination
-	 * @return PagedResources of {@link ActorResponseDTO}
+	 * @return ResponseEntity of paged {@link ActorResponseDTO}
 	 */
 	@SuppressWarnings("rawtypes")
 	public ResponseEntity<PagedResources<ActorResponseDTO>> findAllActors(Pageable pageable,
@@ -32,7 +32,7 @@ public interface ActorService {
 	 * Retrieve details of an actor by the id.
 	 * 
 	 * @param id of the actors
-	 * @return {@link ActorResponseDTO}
+	 * @return ResponseEntity of {@link ActorResponseDTO}
 	 */
 	public ResponseEntity<ActorResponseDTO> findActorById(Long id);
 
@@ -40,7 +40,7 @@ public interface ActorService {
 	 * Add an actor.
 	 * 
 	 * @param actorRequestDTO request object
-	 * @return {@link ActorResponseDTO}
+	 * @return ResponseEntity of {@link ActorResponseDTO}
 	 */
 	public ResponseEntity<ActorResponseDTO> addActor(ActorRequestDTO actorRequestDTO);
 
@@ -48,7 +48,7 @@ public interface ActorService {
 	 * Delete a actor by the id.
 	 * 
 	 * @param id of the actor
-	 * @return {@link ActorResponseDTO}
+	 * @return ResponseEntity of {@link ActorResponseDTO}
 	 */
 	public ResponseEntity<ActorResponseDTO> deleteActor(Long id);
 

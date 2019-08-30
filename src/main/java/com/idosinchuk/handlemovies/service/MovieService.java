@@ -22,7 +22,7 @@ public interface MovieService {
 	 * 
 	 * @param pageable  object for pagination
 	 * @param assembler object for pagination
-	 * @return Page of {@link MovieResponseDTO}
+	 * @return ResponseEntity of paged {@link MovieResponseDTO}
 	 */
 	@SuppressWarnings("rawtypes")
 	public ResponseEntity<PagedResources<MovieResponseDTO>> findAllMovies(Pageable pageable,
@@ -32,7 +32,7 @@ public interface MovieService {
 	 * Retrieve details of a movie by the id.
 	 * 
 	 * @param id of the movie
-	 * @return {@link MovieResponseDTO}
+	 * @return ResponseEntity of {@link MovieResponseDTO}
 	 */
 	public ResponseEntity<MovieResponseDTO> findMovieById(Long id);
 
@@ -40,7 +40,7 @@ public interface MovieService {
 	 * Add a movie.
 	 * 
 	 * @param movieRequestDTO request object
-	 * @return {@link MovieResponseDTO}
+	 * @return ResponseEntity of {@link MovieResponseDTO}
 	 */
 	public ResponseEntity<MovieResponseDTO> addMovie(MovieRequestDTO movieRequestDTO);
 
@@ -48,7 +48,7 @@ public interface MovieService {
 	 * Delete a movie by the id.
 	 * 
 	 * @param id of the movie
-	 * @return {@link MovieResponseDTO}
+	 * @return ResponseEntity of {@link MovieResponseDTO}
 	 */
 	public ResponseEntity<MovieResponseDTO> deleteMovie(Long id);
 }
