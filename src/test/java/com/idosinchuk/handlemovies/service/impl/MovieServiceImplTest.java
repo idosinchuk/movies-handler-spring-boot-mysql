@@ -190,7 +190,7 @@ public class MovieServiceImplTest {
 	}
 
 	@Test
-	public void testFindAllMoviesReturnOk() {
+	public void testGetMoviesReturnOk() {
 
 		Pageable pageable = PageRequest.of(0, 3);
 
@@ -202,8 +202,7 @@ public class MovieServiceImplTest {
 
 		when(movieRepository.findAll(pageable)).thenReturn(entityResponse);
 
-		ResponseEntity<PagedResources<MovieResponseDTO>> movieResponse = movieService.findAllMovies(pageable,
-				assembler);
+		ResponseEntity<PagedResources<MovieResponseDTO>> movieResponse = movieService.getMovies(pageable, assembler);
 		assertNotNull(movieResponse);
 		assertEquals(HttpStatus.OK, movieResponse.getStatusCode());
 
@@ -216,7 +215,7 @@ public class MovieServiceImplTest {
 
 	@Test
 	@Ignore
-	public void testFindAllMoviesReturnNoContent() {
+	public void testGetMoviesReturnNoContent() {
 
 		Pageable pageable = PageRequest.of(0, 3);
 
@@ -228,19 +227,18 @@ public class MovieServiceImplTest {
 		Page<MovieEntity> entityResponse = movieRepository.findAll(pageable);
 		Objects.isNull(entityResponse);
 
-		ResponseEntity<PagedResources<MovieResponseDTO>> movieResponse = movieService.findAllMovies(pageable,
-				assembler);
+		ResponseEntity<PagedResources<MovieResponseDTO>> movieResponse = movieService.getMovies(pageable, assembler);
 		assertEquals(HttpStatus.NO_CONTENT, movieResponse.getStatusCode());
 
 	}
 
 	@Test
-	public void testFindMovieByIdReturnOk() {
+	public void testGetMovieReturnOk() {
 
 		Optional<MovieEntity> entityResponse = Optional.of(movieEntityResponse);
 		when(movieRepository.findById(1L)).thenReturn(entityResponse);
 
-		ResponseEntity<MovieResponseDTO> movieResponse = movieService.findMovieById(1L);
+		ResponseEntity<MovieResponseDTO> movieResponse = movieService.getMovie(1L);
 		assertNotNull(movieResponse);
 
 		verify(movieRepository, times(1)).findById(ArgumentMatchers.any());
@@ -257,9 +255,9 @@ public class MovieServiceImplTest {
 	}
 
 	@Test
-	public void testFindMovieByIdReturnBadRequest() {
+	public void testGetMovieReturnBadRequest() {
 
-		ResponseEntity<MovieResponseDTO> movieResponse = movieService.findMovieById(null);
+		ResponseEntity<MovieResponseDTO> movieResponse = movieService.getMovie(null);
 		assertEquals(HttpStatus.NO_CONTENT, movieResponse.getStatusCode());
 
 	}

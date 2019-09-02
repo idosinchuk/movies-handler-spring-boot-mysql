@@ -54,10 +54,10 @@ public class ActorController {
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<PagedResources<ActorResponseDTO>> findAllActors(Pageable pageable,
+	public ResponseEntity<PagedResources<ActorResponseDTO>> getActors(Pageable pageable,
 			PagedResourcesAssembler assembler) {
 
-		return actorService.findAllActors(pageable, assembler);
+		return actorService.getActors(pageable, assembler);
 
 	}
 
@@ -74,9 +74,9 @@ public class ActorController {
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<ActorResponseDTO> findActorById(@PathVariable Long id) {
+	public ResponseEntity<ActorResponseDTO> getActor(@PathVariable Long id) {
 
-		return actorService.findActorById(id);
+		return actorService.getActor(id);
 	}
 
 	/**

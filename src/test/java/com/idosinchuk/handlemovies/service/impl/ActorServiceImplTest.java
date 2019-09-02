@@ -95,7 +95,7 @@ public class ActorServiceImplTest {
 	}
 
 	@Test
-	public void testFindAllActorsReturnOk() {
+	public void testGetActorsReturnOk() {
 
 		Pageable pageable = PageRequest.of(0, 3);
 
@@ -107,8 +107,7 @@ public class ActorServiceImplTest {
 
 		when(actorRepository.findAll(pageable)).thenReturn(entityResponse);
 
-		ResponseEntity<PagedResources<ActorResponseDTO>> actorResponse = actorService.findAllActors(pageable,
-				assembler);
+		ResponseEntity<PagedResources<ActorResponseDTO>> actorResponse = actorService.getActors(pageable, assembler);
 		assertNotNull(actorResponse);
 		assertEquals(HttpStatus.OK, actorResponse.getStatusCode());
 
@@ -121,7 +120,7 @@ public class ActorServiceImplTest {
 
 	@Test
 	@Ignore
-	public void testFindAllActorsReturnNoContent() {
+	public void testGetActorsReturnNoContent() {
 
 		Pageable pageable = PageRequest.of(0, 3);
 
@@ -133,19 +132,18 @@ public class ActorServiceImplTest {
 		Page<ActorEntity> entityResponse = actorRepository.findAll(pageable);
 		Objects.isNull(entityResponse);
 
-		ResponseEntity<PagedResources<ActorResponseDTO>> actorResponse = actorService.findAllActors(pageable,
-				assembler);
+		ResponseEntity<PagedResources<ActorResponseDTO>> actorResponse = actorService.getActors(pageable, assembler);
 		assertEquals(HttpStatus.NO_CONTENT, actorResponse.getStatusCode());
 
 	}
 
 	@Test
-	public void testFindActorByIdReturnOk() {
+	public void testGetActorReturnOk() {
 
 		Optional<ActorEntity> entityResponse = Optional.of(actorEntityResponse);
 		when(actorRepository.findById(1L)).thenReturn(entityResponse);
 
-		ResponseEntity<ActorResponseDTO> actorResponse = actorService.findActorById(1L);
+		ResponseEntity<ActorResponseDTO> actorResponse = actorService.getActor(1L);
 		assertNotNull(actorResponse);
 
 		verify(actorRepository, times(1)).findById(ArgumentMatchers.any());
@@ -162,9 +160,9 @@ public class ActorServiceImplTest {
 	}
 
 	@Test
-	public void testFindActorByIdReturnBadRequest() {
+	public void testGetActorReturnBadRequest() {
 
-		ResponseEntity<ActorResponseDTO> actorResponse = actorService.findActorById(null);
+		ResponseEntity<ActorResponseDTO> actorResponse = actorService.getActor(null);
 		assertEquals(HttpStatus.NO_CONTENT, actorResponse.getStatusCode());
 
 	}

@@ -133,7 +133,7 @@ public class MovieControllerTest {
 	}
 
 	@Test
-	public void testFindAllMoviesReturnOk() throws Exception {
+	public void testGetMoviesReturnOk() throws Exception {
 
 		List<MovieResponseDTO> movies = new ArrayList<MovieResponseDTO>();
 		movies.add(movieResponseDTO);
@@ -144,7 +144,7 @@ public class MovieControllerTest {
 		ResponseEntity<PagedResources<MovieResponseDTO>> entity = new ResponseEntity<PagedResources<MovieResponseDTO>>(
 				pagedResources, HttpStatus.OK);
 
-		when(movieService.findAllMovies(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(entity);
+		when(movieService.getMovies(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(entity);
 
 		// Result test
 		final ResultActions result = mockMvc.perform(get(MOVIES_PATH).contentType(MediaType.APPLICATION_JSON))
@@ -155,9 +155,9 @@ public class MovieControllerTest {
 	}
 
 	@Test
-	public void testFindMovieByIdReturnOk() throws Exception {
+	public void testGetMovieReturnOk() throws Exception {
 
-		when(movieService.findMovieById(ArgumentMatchers.any()))
+		when(movieService.getMovie(ArgumentMatchers.any()))
 				.thenReturn(new ResponseEntity<MovieResponseDTO>(movieResponseDTO, HttpStatus.OK));
 
 		// Result test

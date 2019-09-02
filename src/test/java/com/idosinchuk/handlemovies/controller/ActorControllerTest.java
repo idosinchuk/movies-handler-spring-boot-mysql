@@ -81,7 +81,7 @@ public class ActorControllerTest {
 	}
 
 	@Test
-	public void testFindAllActorsReturnOk() throws Exception {
+	public void testGetActorsReturnOk() throws Exception {
 
 		List<ActorResponseDTO> actors = new ArrayList<ActorResponseDTO>();
 		actors.add(actorResponseDTO);
@@ -92,7 +92,7 @@ public class ActorControllerTest {
 		ResponseEntity<PagedResources<ActorResponseDTO>> entity = new ResponseEntity<PagedResources<ActorResponseDTO>>(
 				pagedResources, HttpStatus.OK);
 
-		when(actorService.findAllActors(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(entity);
+		when(actorService.getActors(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(entity);
 
 		// Result test
 		final ResultActions result = mockMvc.perform(get(ACTORS_PATH).contentType(MediaType.APPLICATION_JSON))
@@ -103,9 +103,9 @@ public class ActorControllerTest {
 	}
 
 	@Test
-	public void testFindActorByIdReturnOk() throws Exception {
+	public void testGetActorReturnOk() throws Exception {
 
-		when(actorService.findActorById(ArgumentMatchers.any()))
+		when(actorService.getActor(ArgumentMatchers.any()))
 				.thenReturn(new ResponseEntity<ActorResponseDTO>(actorResponseDTO, HttpStatus.OK));
 
 		// Result test

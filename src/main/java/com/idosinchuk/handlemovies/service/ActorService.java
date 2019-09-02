@@ -25,7 +25,7 @@ public interface ActorService {
 	 * @return ResponseEntity of paged {@link ActorResponseDTO}
 	 */
 	@SuppressWarnings("rawtypes")
-	public ResponseEntity<PagedResources<ActorResponseDTO>> findAllActors(Pageable pageable,
+	public ResponseEntity<PagedResources<ActorResponseDTO>> getActors(Pageable pageable,
 			PagedResourcesAssembler assembler);
 
 	/**
@@ -34,7 +34,7 @@ public interface ActorService {
 	 * @param id of the actors
 	 * @return ResponseEntity of {@link ActorResponseDTO}
 	 */
-	public ResponseEntity<ActorResponseDTO> findActorById(Long id);
+	public ResponseEntity<ActorResponseDTO> getActor(Long id);
 
 	/**
 	 * Add an actor.

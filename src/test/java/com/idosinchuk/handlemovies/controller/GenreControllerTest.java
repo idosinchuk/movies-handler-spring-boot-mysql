@@ -79,7 +79,7 @@ public class GenreControllerTest {
 	}
 
 	@Test
-	public void testFindAllGenresReturnOk() throws Exception {
+	public void testGetGenresReturnOk() throws Exception {
 
 		List<GenreResponseDTO> genres = new ArrayList<GenreResponseDTO>();
 		genres.add(genreResponseDTO);
@@ -90,7 +90,7 @@ public class GenreControllerTest {
 		ResponseEntity<PagedResources<GenreResponseDTO>> entity = new ResponseEntity<PagedResources<GenreResponseDTO>>(
 				pagedResources, HttpStatus.OK);
 
-		when(genreService.findAllGenres(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(entity);
+		when(genreService.getGenres(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(entity);
 
 		// Result test
 		final ResultActions result = mockMvc.perform(get(GENRES_PATH).contentType(MediaType.APPLICATION_JSON))
@@ -101,9 +101,9 @@ public class GenreControllerTest {
 	}
 
 	@Test
-	public void testFindGenreByIdReturnOk() throws Exception {
+	public void testGetGenreReturnOk() throws Exception {
 
-		when(genreService.findGenreById(ArgumentMatchers.any()))
+		when(genreService.getGenre(ArgumentMatchers.any()))
 				.thenReturn(new ResponseEntity<GenreResponseDTO>(genreResponseDTO, HttpStatus.OK));
 
 		// Result test

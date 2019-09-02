@@ -25,7 +25,7 @@ public interface MovieService {
 	 * @return ResponseEntity of paged {@link MovieResponseDTO}
 	 */
 	@SuppressWarnings("rawtypes")
-	public ResponseEntity<PagedResources<MovieResponseDTO>> findAllMovies(Pageable pageable,
+	public ResponseEntity<PagedResources<MovieResponseDTO>> getMovies(Pageable pageable,
 			PagedResourcesAssembler assembler);
 
 	/**
@@ -34,7 +34,7 @@ public interface MovieService {
 	 * @param id of the movie
 	 * @return ResponseEntity of {@link MovieResponseDTO}
 	 */
-	public ResponseEntity<MovieResponseDTO> findMovieById(Long id);
+	public ResponseEntity<MovieResponseDTO> getMovie(Long id);
 
 	/**
 	 * Add a movie.

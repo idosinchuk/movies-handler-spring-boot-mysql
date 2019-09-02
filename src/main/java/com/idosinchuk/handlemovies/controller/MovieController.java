@@ -58,10 +58,10 @@ public class MovieController {
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<PagedResources<MovieResponseDTO>> findAllMovies(Pageable pageable,
+	public ResponseEntity<PagedResources<MovieResponseDTO>> getMovies(Pageable pageable,
 			PagedResourcesAssembler assembler) {
 
-		return movieService.findAllMovies(pageable, assembler);
+		return movieService.getMovies(pageable, assembler);
 	}
 
 	/**
@@ -77,9 +77,9 @@ public class MovieController {
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<MovieResponseDTO> findMovieById(@PathVariable Long id) {
+	public ResponseEntity<MovieResponseDTO> getMovie(@PathVariable Long id) {
 
-		return movieService.findMovieById(id);
+		return movieService.getMovie(id);
 
 	}
 

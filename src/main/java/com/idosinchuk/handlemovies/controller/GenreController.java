@@ -54,10 +54,10 @@ public class GenreController {
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<PagedResources<GenreResponseDTO>> findAllGenres(Pageable pageable,
+	public ResponseEntity<PagedResources<GenreResponseDTO>> getGenres(Pageable pageable,
 			PagedResourcesAssembler assembler) {
 
-		return genreService.findAllGenres(pageable, assembler);
+		return genreService.getGenres(pageable, assembler);
 
 	}
 
@@ -74,9 +74,9 @@ public class GenreController {
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<GenreResponseDTO> findGenreById(@PathVariable Long id) {
+	public ResponseEntity<GenreResponseDTO> getGenre(@PathVariable Long id) {
 
-		return genreService.findGenreById(id);
+		return genreService.getGenre(id);
 
 	}
 

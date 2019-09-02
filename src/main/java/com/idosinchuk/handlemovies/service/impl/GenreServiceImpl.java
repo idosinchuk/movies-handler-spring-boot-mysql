@@ -47,8 +47,8 @@ public class GenreServiceImpl implements GenreService {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	@Cacheable // caches the result of findAllGenres() method
-	public ResponseEntity<PagedResources<GenreResponseDTO>> findAllGenres(Pageable pageable,
+	@Cacheable // caches the result of getGenres() method
+	public ResponseEntity<PagedResources<GenreResponseDTO>> getGenres(Pageable pageable,
 			PagedResourcesAssembler assembler) {
 
 		log.info("Fetching all genres");
@@ -66,8 +66,8 @@ public class GenreServiceImpl implements GenreService {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Cacheable // caches the result of findGenreById() method
-	public ResponseEntity<GenreResponseDTO> findGenreById(Long id) {
+	@Cacheable // caches the result of getGenre() method
+	public ResponseEntity<GenreResponseDTO> getGenre(Long id) {
 
 		GenreResponseDTO response = null;
 

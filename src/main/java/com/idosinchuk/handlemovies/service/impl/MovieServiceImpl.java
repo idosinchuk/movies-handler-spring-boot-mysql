@@ -61,8 +61,8 @@ public class MovieServiceImpl implements MovieService {
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Cacheable // caches the result of findAllMovies() method
-	public ResponseEntity<PagedResources<MovieResponseDTO>> findAllMovies(Pageable pageable,
+	@Cacheable // caches the result of getMovies() method
+	public ResponseEntity<PagedResources<MovieResponseDTO>> getMovies(Pageable pageable,
 			PagedResourcesAssembler assembler) {
 
 		log.info("Fetching all movies");
@@ -80,8 +80,8 @@ public class MovieServiceImpl implements MovieService {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Cacheable // caches the result of findMovieById() method
-	public ResponseEntity<MovieResponseDTO> findMovieById(Long id) {
+	@Cacheable // caches the result of getMovie() method
+	public ResponseEntity<MovieResponseDTO> getMovie(Long id) {
 
 		MovieResponseDTO movieResponseDTO;
 

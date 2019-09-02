@@ -91,7 +91,7 @@ public class GenreServiceImplTest {
 	}
 
 	@Test
-	public void testFindAllGenresReturnOk() {
+	public void testGetGenresReturnOk() {
 
 		Pageable pageable = PageRequest.of(0, 3);
 
@@ -103,8 +103,7 @@ public class GenreServiceImplTest {
 
 		when(genreRepository.findAll(pageable)).thenReturn(entityResponse);
 
-		ResponseEntity<PagedResources<GenreResponseDTO>> genreResponse = genreService.findAllGenres(pageable,
-				assembler);
+		ResponseEntity<PagedResources<GenreResponseDTO>> genreResponse = genreService.getGenres(pageable, assembler);
 		assertNotNull(genreResponse);
 		assertEquals(HttpStatus.OK, genreResponse.getStatusCode());
 
@@ -117,7 +116,7 @@ public class GenreServiceImplTest {
 
 	@Test
 	@Ignore
-	public void testFindAllGenresReturnNoContent() {
+	public void testGetGenresReturnNoContent() {
 
 		Pageable pageable = PageRequest.of(0, 3);
 
@@ -129,19 +128,18 @@ public class GenreServiceImplTest {
 		Page<GenreEntity> entityResponse = genreRepository.findAll(pageable);
 		Objects.isNull(entityResponse);
 
-		ResponseEntity<PagedResources<GenreResponseDTO>> genreResponse = genreService.findAllGenres(pageable,
-				assembler);
+		ResponseEntity<PagedResources<GenreResponseDTO>> genreResponse = genreService.getGenres(pageable, assembler);
 		assertEquals(HttpStatus.NO_CONTENT, genreResponse.getStatusCode());
 
 	}
 
 	@Test
-	public void testFindGenreByIdReturnOk() {
+	public void testGetGenreReturnOk() {
 
 		Optional<GenreEntity> entityResponse = Optional.of(genreEntityResponse);
 		when(genreRepository.findById(1L)).thenReturn(entityResponse);
 
-		ResponseEntity<GenreResponseDTO> genreResponse = genreService.findGenreById(1L);
+		ResponseEntity<GenreResponseDTO> genreResponse = genreService.getGenre(1L);
 		assertNotNull(genreResponse);
 
 		verify(genreRepository, times(1)).findById(ArgumentMatchers.any());
@@ -158,9 +156,9 @@ public class GenreServiceImplTest {
 	}
 
 	@Test
-	public void testFindGenreByIdReturnBadRequest() {
+	public void testGetGenreReturnBadRequest() {
 
-		ResponseEntity<GenreResponseDTO> genreResponse = genreService.findGenreById(null);
+		ResponseEntity<GenreResponseDTO> genreResponse = genreService.getGenre(null);
 		assertEquals(HttpStatus.NO_CONTENT, genreResponse.getStatusCode());
 
 	}

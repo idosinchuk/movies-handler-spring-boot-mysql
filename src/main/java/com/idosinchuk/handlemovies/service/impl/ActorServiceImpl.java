@@ -47,8 +47,8 @@ public class ActorServiceImpl implements ActorService {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	@Cacheable // caches the result of findAllActors() method
-	public ResponseEntity<PagedResources<ActorResponseDTO>> findAllActors(Pageable pageable,
+	@Cacheable // caches the result of getActors() method
+	public ResponseEntity<PagedResources<ActorResponseDTO>> getActors(Pageable pageable,
 			PagedResourcesAssembler assembler) {
 
 		log.info("Fetching all actors");
@@ -66,7 +66,7 @@ public class ActorServiceImpl implements ActorService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public ResponseEntity<ActorResponseDTO> findActorById(Long id) {
+	public ResponseEntity<ActorResponseDTO> getActor(Long id) {
 
 		ActorResponseDTO response = null;
 

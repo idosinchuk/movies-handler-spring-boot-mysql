@@ -25,7 +25,7 @@ public interface GenreService {
 	 * @return ResponseEntity of paged {@link GenreResponseDTO}
 	 */
 	@SuppressWarnings("rawtypes")
-	public ResponseEntity<PagedResources<GenreResponseDTO>> findAllGenres(Pageable pageable,
+	public ResponseEntity<PagedResources<GenreResponseDTO>> getGenres(Pageable pageable,
 			PagedResourcesAssembler assembler);
 
 	/**
@@ -34,7 +34,7 @@ public interface GenreService {
 	 * @param id of the genre
 	 * @return ResponseEntity of {@link GenreResponseDTO}
 	 */
-	public ResponseEntity<GenreResponseDTO> findGenreById(Long id);
+	public ResponseEntity<GenreResponseDTO> getGenre(Long id);
 
 	/**
 	 * Add a genre.
