@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiResponses;
  *
  */
 @RestController
-@Api(value = "API Rest for handle actors.")
+@Api(value = "Actor API Rest")
 @RequestMapping({ "api/v1/actors" })
 public class ActorController {
 

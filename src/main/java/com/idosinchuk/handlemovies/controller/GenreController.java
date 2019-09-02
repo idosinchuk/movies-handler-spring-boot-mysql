@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiResponses;
  *
  */
 @RestController
-@Api(value = "API Rest for handle genres.")
+@Api(value = "Genre API Rest")
 @RequestMapping({ "api/v1/genres" })
 public class GenreController {
 

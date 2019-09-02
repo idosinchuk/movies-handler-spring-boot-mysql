@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiResponses;
  *
  */
 @RestController
-@Api(value = "API Rest for handle movies.")
+@Api(value = "Movie API Rest")
 @RequestMapping({ "api/v1/movies" })
 public class MovieController {
 

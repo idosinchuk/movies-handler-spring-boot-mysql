@@ -15,10 +15,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@SpringBootApplication
+@EnableSpringDataWebSupport
 @Configuration
 @EnableWebMvc
-@EnableSpringDataWebSupport
-@SpringBootApplication
 @EnableCaching
 @EnableScheduling
 @EnableEurekaClient // Enable eureka client. It inherits from @EnableDiscoveryClient.
@@ -50,5 +50,4 @@ public class HandleMoviesApplication {
 			registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 		}
 	}
-
 }
