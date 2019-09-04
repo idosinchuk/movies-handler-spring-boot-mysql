@@ -23,6 +23,7 @@ import com.idosinchuk.handlemovies.dto.MovieRequestDTO;
 import com.idosinchuk.handlemovies.dto.MovieResponseDTO;
 import com.idosinchuk.handlemovies.service.MovieService;
 
+import io.micrometer.core.annotation.Timed;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -35,8 +36,9 @@ import io.swagger.annotations.ApiResponses;
  *
  */
 @RestController
+@Timed
 @Api(value = "Movie API Rest")
-@RequestMapping({ "api/v1/movies" })
+@RequestMapping({ "api/v1" })
 public class MovieController {
 
 	public static final Logger logger = LoggerFactory.getLogger(MovieController.class);
@@ -51,7 +53,8 @@ public class MovieController {
 	 * @return ResponseEntity of paged list of all movies
 	 */
 	@SuppressWarnings({ "rawtypes" })
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/movies", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Timed
 	@ResponseBody
 	@ApiOperation(value = "Retrieve list of all movies according to the search criteria.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
@@ -70,14 +73,15 @@ public class MovieController {
 	 * @param id movie id
 	 * @return Information of the actor
 	 */
-	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Timed(longTask = true)
+	@GetMapping(path = "/movies/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Retrieve details of a movie by the id.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<MovieResponseDTO> getMovie(@PathVariable Long id) {
+	public ResponseEntity<MovieResponseDTO> getMovies(@PathVariable Long id) {
 
 		return movieService.getMovie(id);
 
@@ -89,14 +93,14 @@ public class MovieController {
 	 * @param MovieResponseDTO object to save
 	 * @return ResponseEntity of {@link MovieResponseDTO}
 	 */
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/movies", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Add a movie.")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created"),
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<MovieResponseDTO> addMovie(@Valid @RequestBody MovieRequestDTO movieRequestDTO) {
+	public ResponseEntity<MovieResponseDTO> addMovies(@Valid @RequestBody MovieRequestDTO movieRequestDTO) {
 
 		return movieService.addMovie(movieRequestDTO);
 
@@ -108,14 +112,14 @@ public class MovieController {
 	 * @param id movie id
 	 * @return ResponseEntity of {@link MovieResponseDTO}
 	 */
-	@DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(path = "/movies/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Delete a movie by the id.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<MovieResponseDTO> deleteMovie(@PathVariable Long id) {
+	public ResponseEntity<MovieResponseDTO> deleteMovies(@PathVariable Long id) {
 
 		return movieService.deleteMovie(id);
 	}

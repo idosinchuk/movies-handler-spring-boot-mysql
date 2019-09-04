@@ -21,6 +21,7 @@ import com.idosinchuk.handlemovies.dto.ActorRequestDTO;
 import com.idosinchuk.handlemovies.dto.ActorResponseDTO;
 import com.idosinchuk.handlemovies.service.ActorService;
 
+import io.micrometer.core.annotation.Timed;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -33,8 +34,9 @@ import io.swagger.annotations.ApiResponses;
  *
  */
 @RestController
+@Timed
 @Api(value = "Actor API Rest")
-@RequestMapping({ "api/v1/actors" })
+@RequestMapping({ "api/v1" })
 public class ActorController {
 
 	@Autowired
@@ -47,7 +49,8 @@ public class ActorController {
 	 * @return List of actors found with support hateoas and pagination
 	 */
 	@SuppressWarnings({ "rawtypes" })
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/actors", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Timed
 	@ResponseBody
 	@ApiOperation(value = "Retrieve list of all actors.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
@@ -67,14 +70,14 @@ public class ActorController {
 	 * @param id actor id
 	 * @return Information of the actor
 	 */
-	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/actors/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Retrieve details of an actor by the id.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<ActorResponseDTO> getActor(@PathVariable Long id) {
+	public ResponseEntity<ActorResponseDTO> getActors(@PathVariable Long id) {
 
 		return actorService.getActor(id);
 	}
@@ -85,14 +88,14 @@ public class ActorController {
 	 * @param ActorResponseDTO object to save
 	 * @return response with status and ActorResponseDTO
 	 */
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/actors", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Add an actor.")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created"),
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<ActorResponseDTO> addActor(@Valid @RequestBody ActorRequestDTO actorRequestDTO) {
+	public ResponseEntity<ActorResponseDTO> addActors(@Valid @RequestBody ActorRequestDTO actorRequestDTO) {
 
 		return actorService.addActor(actorRequestDTO);
 
@@ -104,14 +107,14 @@ public class ActorController {
 	 * @param id actor id
 	 * @return response with status
 	 */
-	@DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(path = "/actors/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Delete an actor by the id.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<ActorResponseDTO> deleteActor(@PathVariable Long id) {
+	public ResponseEntity<ActorResponseDTO> deleteActors(@PathVariable Long id) {
 
 		return actorService.deleteActor(id);
 

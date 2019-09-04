@@ -155,7 +155,7 @@ public class MovieControllerTest {
 	}
 
 	@Test
-	public void testGetMovieReturnOk() throws Exception {
+	public void testGetMoviesByIdReturnOk() throws Exception {
 
 		when(movieService.getMovie(ArgumentMatchers.any()))
 				.thenReturn(new ResponseEntity<MovieResponseDTO>(movieResponseDTO, HttpStatus.OK));
@@ -166,7 +166,7 @@ public class MovieControllerTest {
 	}
 
 	@Test
-	public void testAddMovieReturnOk() throws Exception {
+	public void testAddMoviesReturnOk() throws Exception {
 
 		ResponseEntity<MovieResponseDTO> response = new ResponseEntity<MovieResponseDTO>(movieResponseDTO,
 				HttpStatus.CREATED);
@@ -185,7 +185,7 @@ public class MovieControllerTest {
 	}
 
 	@Test
-	public void testDeleteMovieReturnOk() throws Exception {
+	public void testDeleteMoviesReturnOk() throws Exception {
 
 		final ResultActions result = mockMvc.perform(delete(MOVIE_ID_PATH).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());

@@ -21,6 +21,7 @@ import com.idosinchuk.handlemovies.dto.GenreRequestDTO;
 import com.idosinchuk.handlemovies.dto.GenreResponseDTO;
 import com.idosinchuk.handlemovies.service.GenreService;
 
+import io.micrometer.core.annotation.Timed;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -34,7 +35,7 @@ import io.swagger.annotations.ApiResponses;
  */
 @RestController
 @Api(value = "Genre API Rest")
-@RequestMapping({ "api/v1/genres" })
+@RequestMapping({ "api/v1" })
 public class GenreController {
 
 	@Autowired
@@ -47,7 +48,8 @@ public class GenreController {
 	 * @return List of actors found with support hateoas and pagination
 	 */
 	@SuppressWarnings({ "rawtypes" })
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/genres", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Timed
 	@ResponseBody
 	@ApiOperation(value = "Retrieve list of all genres.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
@@ -67,14 +69,14 @@ public class GenreController {
 	 * @param id genre id
 	 * @return Information of the genre
 	 */
-	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/genres/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Retrieve details of a genre by the id.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<GenreResponseDTO> getGenre(@PathVariable Long id) {
+	public ResponseEntity<GenreResponseDTO> getGenres(@PathVariable Long id) {
 
 		return genreService.getGenre(id);
 
@@ -86,14 +88,14 @@ public class GenreController {
 	 * @param GenreResponseDTO object to save
 	 * @return response with status and GenreResponseDTO
 	 */
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/genres", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Add a genre.")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created"),
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<GenreResponseDTO> addGenre(@Valid @RequestBody GenreRequestDTO genreRequestDTO) {
+	public ResponseEntity<GenreResponseDTO> addGenres(@Valid @RequestBody GenreRequestDTO genreRequestDTO) {
 
 		return genreService.addGenre(genreRequestDTO);
 
@@ -105,14 +107,14 @@ public class GenreController {
 	 * @param id genre id
 	 * @return response with status
 	 */
-	@DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(path = "/genres/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ApiOperation(value = "Delete a genre by the id.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 204, message = "No Content"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Internal Error"),
 			@ApiResponse(code = 503, message = "Service Unavailable") })
-	public ResponseEntity<GenreResponseDTO> deleteGenre(@PathVariable Long id) {
+	public ResponseEntity<GenreResponseDTO> deleteGenres(@PathVariable Long id) {
 
 		return genreService.deleteGenre(id);
 	}

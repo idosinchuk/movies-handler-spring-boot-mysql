@@ -101,7 +101,7 @@ public class GenreControllerTest {
 	}
 
 	@Test
-	public void testGetGenreReturnOk() throws Exception {
+	public void testGetGenresByIdReturnOk() throws Exception {
 
 		when(genreService.getGenre(ArgumentMatchers.any()))
 				.thenReturn(new ResponseEntity<GenreResponseDTO>(genreResponseDTO, HttpStatus.OK));
@@ -112,7 +112,7 @@ public class GenreControllerTest {
 	}
 
 	@Test
-	public void testAddGenreReturnOk() throws Exception {
+	public void testAddGenresReturnOk() throws Exception {
 
 		ResponseEntity<GenreResponseDTO> response = new ResponseEntity<GenreResponseDTO>(genreResponseDTO,
 				HttpStatus.CREATED);
@@ -131,7 +131,7 @@ public class GenreControllerTest {
 	}
 
 	@Test
-	public void testDeleteGenreReturnOk() throws Exception {
+	public void testDeleteGenresReturnOk() throws Exception {
 
 		final ResultActions result = mockMvc.perform(delete(GENRE_ID_PATH).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());

@@ -103,7 +103,7 @@ public class ActorControllerTest {
 	}
 
 	@Test
-	public void testGetActorReturnOk() throws Exception {
+	public void testGetActorsByIdReturnOk() throws Exception {
 
 		when(actorService.getActor(ArgumentMatchers.any()))
 				.thenReturn(new ResponseEntity<ActorResponseDTO>(actorResponseDTO, HttpStatus.OK));
@@ -114,7 +114,7 @@ public class ActorControllerTest {
 	}
 
 	@Test
-	public void testAddActorReturnOk() throws Exception {
+	public void testAddActorsReturnOk() throws Exception {
 
 		ResponseEntity<ActorResponseDTO> response = new ResponseEntity<ActorResponseDTO>(actorResponseDTO,
 				HttpStatus.CREATED);
@@ -133,7 +133,7 @@ public class ActorControllerTest {
 	}
 
 	@Test
-	public void testDeleteActorReturnOk() throws Exception {
+	public void testDeleteActorsReturnOk() throws Exception {
 
 		final ResultActions result = mockMvc.perform(delete(ACTOR_ID_PATH).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
