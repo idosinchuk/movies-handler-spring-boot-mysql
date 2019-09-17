@@ -47,24 +47,8 @@ public class MovieEntity {
 	@ManyToMany(cascade = CascadeType.MERGE)
 	private List<ActorEntity> actors;
 
-	public void addActor(ActorEntity actor) {
-		if (this.actors == null) {
-			this.actors = new ArrayList<>();
-		}
-
-		this.actors.add(actor);
-	}
-
 	@JoinTable(name = "movie_has_genre", joinColumns = @JoinColumn(name = "movie_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "genre_id", nullable = false))
 	@ManyToMany(cascade = CascadeType.MERGE)
 	private List<GenreEntity> genres;
-
-	public void addGenre(GenreEntity genre) {
-		if (this.genres == null) {
-			this.genres = new ArrayList<>();
-		}
-
-		this.genres.add(genre);
-	}
 
 }
